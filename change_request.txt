@@ -1,0 +1,1 @@
+Add home screen after login with a financial metrics shown at the top S&P stocks. And integrate with open source API for stock tickers.
