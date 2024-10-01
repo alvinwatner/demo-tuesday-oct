@@ -1,7 +1,7 @@
 com.example.simple_app
 2.12
-file:///app/workspaces/demo-tuesday-oct_20241001_014114/src/
-file:///app/workspaces/demo-tuesday-oct_20241001_014114/src/lib/
+file:///app/workspaces/demo-tuesday-oct_20241001_015812/src/
+file:///app/workspaces/demo-tuesday-oct_20241001_015812/src/lib/
 _macros
 3.4
 file:///flutter/bin/cache/dart-sdk/pkg/_macros/
@@ -98,6 +98,10 @@ glob
 2.19
 file:///root/.pub-cache/hosted/pub.dev/glob-2.1.2/
 file:///root/.pub-cache/hosted/pub.dev/glob-2.1.2/lib/
+http
+2.19
+file:///root/.pub-cache/hosted/pub.dev/http-0.13.6/
+file:///root/.pub-cache/hosted/pub.dev/http-0.13.6/lib/
 http_multi_server
 2.12
 file:///root/.pub-cache/hosted/pub.dev/http_multi_server-3.2.1/
