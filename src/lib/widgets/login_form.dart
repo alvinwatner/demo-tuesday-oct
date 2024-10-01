@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubits/auth_cubit.dart';
+import '../screens/home_screen.dart';
 
 class LoginForm extends StatefulWidget {
 	@override
@@ -42,7 +43,15 @@ class _LoginFormState extends State<LoginForm> {
 						onPressed: () {
 							final email = _emailController.text;
 							final password = _passwordController.text;
-							context.read<AuthCubit>().login(email, password);
+							context.read<AuthCubit>().login(
+								email, 
+								password, 
+								onSuccess: () {
+									Navigator.of(context).pushReplacement(
+										MaterialPageRoute(builder: (_) => HomeScreen())
+									);
+								}
+							);
 						},
 						child: Text('Login'),
 					),

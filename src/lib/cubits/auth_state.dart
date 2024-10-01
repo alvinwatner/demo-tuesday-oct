@@ -1,5 +1,6 @@
 
 import 'package:equatable/equatable.dart';
+import '../models/stock_model.dart';
 
 abstract class AuthState extends Equatable {
 	const AuthState();
@@ -16,10 +17,12 @@ class AuthInitial extends AuthState {
 }
 
 class Authenticated extends AuthState {
-	const Authenticated();
-	
+	final List<Stock> stocks;
+
+	const Authenticated(this.stocks);
+
 	@override
-	List<Object> get props => [];
+	List<Object> get props => [stocks];
 }
 
 class Unauthenticated extends AuthState {

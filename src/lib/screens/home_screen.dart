@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:com.example.simple_app/widgets/logout_button.dart';
+import 'package:com.example.simple_app/widgets/stock_metrics.dart';
 import 'package:com.example.simple_app/cubits/auth_cubit.dart';
+import 'package:com.example.simple_app/cubits/stock_cubit.dart';
 
 class HomeScreen extends StatelessWidget {
 	@override
@@ -11,8 +13,16 @@ class HomeScreen extends StatelessWidget {
 			appBar: AppBar(
 				title: Text('Home'),
 			),
-			body: Center(
-				child: LogoutButton(),
+			body: Column(
+				children: [
+					BlocProvider(
+						create: (context) => StockCubit()..fetchStockData(),
+						child: StockMetrics(),
+					),
+					Center(
+						child: LogoutButton(),
+					),
+				],
 			),
 		);
 	}
