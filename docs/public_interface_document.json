@@ -1,16 +1,19 @@
 {
   "package_name": "com.example.simple_app",
-  "project_description": "A simple Flutter application with login and home screens, using the Cubit pattern for state management.",
-  "architecture_overview": "The project follows a modular architecture with separate folders for screens, cubits, models, and shared utilities. The Cubit pattern is used for state management.",
+  "project_description": "A simple Flutter application with login and home screens, displaying financial metrics for S&P stocks, using the Cubit pattern for state management.",
+  "architecture_overview": "The project follows a modular architecture with separate folders for screens, cubits, models, and shared utilities. The Cubit pattern is used for state management. The home screen fetches and displays financial metrics for S&P stocks using an open-source API.",
   "folder_structure": {
     "lib": {
       "main.dart": {},
       "cubits": {
         "auth_cubit.dart": {},
-        "auth_state.dart": {}
+        "auth_state.dart": {},
+        "stock_cubit.dart": {},
+        "stock_state.dart": {}
       },
       "models": {
-        "user_model.dart": {}
+        "user_model.dart": {},
+        "stock_model.dart": {}
       },
       "screens": {
         "login_screen.dart": {},
@@ -18,7 +21,8 @@
       },
       "widgets": {
         "login_form.dart": {},
-        "logout_button.dart": {}
+        "logout_button.dart": {},
+        "stock_metrics.dart": {}
       }
     }
   },
@@ -33,7 +37,8 @@
         "package:flutter_bloc/flutter_bloc.dart",
         "screens/login_screen.dart",
         "screens/home_screen.dart",
-        "cubits/auth_cubit.dart"
+        "cubits/auth_cubit.dart",
+        "cubits/stock_cubit.dart"
       ]
     },
     {
@@ -70,9 +75,43 @@
       "dependencies": []
     },
     {
+      "name": "lib/cubits/stock_cubit.dart",
+      "description": "Defines the StockCubit which manages stock data state.",
+      "class_diagram": "@startuml\nclass StockCubit {\n  +void fetchStockData()\n}\n@enduml",
+      "methods": [
+        {
+          "name": "fetchStockData",
+          "description": "Fetches stock data from the API.",
+          "parameters": [],
+          "return_type": "void"
+        }
+      ],
+      "dependencies": [
+        "package:flutter_bloc/flutter_bloc.dart",
+        "stock_state.dart",
+        "models/stock_model.dart"
+      ]
+    },
+    {
+      "name": "lib/cubits/stock_state.dart",
+      "description": "Defines the states managed by StockCubit.",
+      "class_diagram": "@startuml\nclass StockState {\n}\nclass StockInitial extends StockState {\n}\nclass StockLoading extends StockState {\n}\nclass StockLoaded extends StockState {\n  List<Stock> stocks\n}\nclass StockError extends StockState {\n  String message\n}\n@enduml",
+      "methods": [],
+      "dependencies": [
+        "models/stock_model.dart"
+      ]
+    },
+    {
       "name": "lib/models/user_model.dart",
       "description": "Defines the User model.",
       "class_diagram": "@startuml\nclass User {\n  String id\n  String email\n}\n@enduml",
+      "methods": [],
+      "dependencies": []
+    },
+    {
+      "name": "lib/models/stock_model.dart",
+      "description": "Defines the Stock model.",
+      "class_diagram": "@startuml\nclass Stock {\n  String symbol\n  double price\n  double change\n}\n@enduml",
       "methods": [],
       "dependencies": []
     },
@@ -93,7 +132,9 @@
       "methods": [],
       "dependencies": [
         "package:flutter/material.dart",
-        "widgets/logout_button.dart"
+        "widgets/logout_button.dart",
+        "widgets/stock_metrics.dart",
+        "cubits/stock_cubit.dart"
       ]
     },
     {
@@ -117,6 +158,17 @@
         "package:flutter_bloc/flutter_bloc.dart",
         "cubits/auth_cubit.dart"
       ]
+    },
+    {
+      "name": "lib/widgets/stock_metrics.dart",
+      "description": "Defines the StockMetrics widget.",
+      "class_diagram": "@startuml\nclass StockMetrics extends StatelessWidget {\n}\n@enduml",
+      "methods": [],
+      "dependencies": [
+        "package:flutter/material.dart",
+        "package:flutter_bloc/flutter_bloc.dart",
+        "cubits/stock_cubit.dart"
+      ]
     }
   ],
   "widgets": [
@@ -129,7 +181,7 @@
     {
       "name": "HomeScreen",
       "type": "StatelessWidget",
-      "description": "The screen displayed after a successful login.",
+      "description": "The screen displayed after a successful login, showing financial metrics for S&P stocks.",
       "file_name": "lib/screens/home_screen.dart"
     },
     {
@@ -143,6 +195,12 @@
       "type": "StatelessWidget",
       "description": "A button that logs the user out when pressed.",
       "file_name": "lib/widgets/logout_button.dart"
+    },
+    {
+      "name": "StockMetrics",
+      "type": "StatelessWidget",
+      "description": "Displays financial metrics for S&P stocks.",
+      "file_name": "lib/widgets/stock_metrics.dart"
     }
   ],
   "cubits": [
@@ -168,6 +226,20 @@
         }
       ],
       "file_name": "lib/cubits/auth_cubit.dart"
+    },
+    {
+      "name": "StockCubit",
+      "state": "StockState",
+      "description": "Manages the stock data state of the application.",
+      "methods": [
+        {
+          "name": "fetchStockData",
+          "description": "Fetches stock data from the API.",
+          "parameters": [],
+          "return_type": "void"
+        }
+      ],
+      "file_name": "lib/cubits/stock_cubit.dart"
     }
   ],
   "models": [
@@ -179,6 +251,16 @@
         "String email"
       ],
       "file_name": "lib/models/user_model.dart"
+    },
+    {
+      "name": "Stock",
+      "description": "Represents stock information.",
+      "attributes": [
+        "String symbol",
+        "double price",
+        "double change"
+      ],
+      "file_name": "lib/models/stock_model.dart"
     }
   ],
   "dependencies": [
@@ -196,11 +278,16 @@
       "name": "equatable",
       "version": "^2.0.0",
       "purpose": "Simplifies equality comparisons."
+    },
+    {
+      "name": "http",
+      "version": "^0.13.3",
+      "purpose": "HTTP client for making API requests."
     }
   ],
-  "sequence_diagram": "@startuml\nactor User\nUser -> LoginScreen: Open App\nLoginScreen -> AuthCubit: submit login\nAuthCubit -> AuthState: update state to Authenticated\nAuthCubit -> HomeScreen: navigate to\nHomeScreen -> AuthCubit: press logout\nAuthCubit -> AuthState: update state to Unauthenticated\nAuthCubit -> LoginScreen: navigate to\n@enduml",
-  "state_management_flow": "State is managed using Cubits. The AuthCubit handles authentication logic and updates the AuthState accordingly. The UI reacts to state changes by displaying the appropriate screen.",
-  "navigation_flow": "The app starts with the LoginScreen. Upon successful login, the user is navigated to the HomeScreen. From the HomeScreen, the user can log out and be navigated back to the LoginScreen.",
+  "sequence_diagram": "@startuml\nactor User\nUser -> LoginScreen: Open App\nLoginScreen -> AuthCubit: submit login\nAuthCubit -> AuthState: update state to Authenticated\nAuthCubit -> HomeScreen: navigate to\nHomeScreen -> StockCubit: fetch stock data\nStockCubit -> StockState: update state to StockLoaded\nHomeScreen -> AuthCubit: press logout\nAuthCubit -> AuthState: update state to Unauthenticated\nAuthCubit -> LoginScreen: navigate to\n@enduml",
+  "state_management_flow": "State is managed using Cubits. The AuthCubit handles authentication logic and updates the AuthState accordingly. The StockCubit handles fetching and managing stock data and updates the StockState. The UI reacts to state changes by displaying the appropriate screen and data.",
+  "navigation_flow": "The app starts with the LoginScreen. Upon successful login, the user is navigated to the HomeScreen, which fetches and displays financial metrics for S&P stocks. From the HomeScreen, the user can log out and be navigated back to the LoginScreen.",
   "pubspec_yaml": {
     "name": "simple_app",
     "description": "A simple Flutter application with login and home screens.",
@@ -213,7 +300,8 @@
         "sdk": "flutter"
       },
       "flutter_bloc": "^7.0.0",
-      "equatable": "^2.0.0"
+      "equatable": "^2.0.0",
+      "http": "^0.13.3"
     },
     "dev_dependencies": {
       "flutter_test": {
